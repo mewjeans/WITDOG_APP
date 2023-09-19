@@ -1,0 +1,6 @@
+flutter_native_splash:
+  color: "#F3FDE8"
+  image: assets/logo/WITDOG_500.png
+  android_gravity: center
+  ios_content_mode: center
+  fullscreen: true
