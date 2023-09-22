@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pet/screens/auth/login_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main(){
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: '[My_SUPABASE_URL]',
+    anonKey: '[My_SUPABASE_ANON_KEY]',
+  );
   runApp(MyApp());
 }
 
