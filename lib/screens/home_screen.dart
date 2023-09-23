@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pet/screens/chat_screen.dart';
+import 'package:pet/screens/my_profile.dart';
 import 'package:pet/widgets/service_guide_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -9,6 +11,32 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  static List<Widget> _widgetOptions = <Widget>[
+    HomeScreenContent(),
+    ChatScreen(),
+    MyProfile(),
+  ];
+
+  static List<BottomNavigationBarItem> _bottomNavBarItems = <BottomNavigationBarItem>[
+    BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: '홈',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.chat),
+      label: '채팅',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      label: 'MY',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +83,129 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(width: 15),
         ],
       ),
+      body: _widgetOptions[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        items: _bottomNavBarItems,
+        onTap: _onItemTapped,
+        selectedItemColor: Color(0xFFA8DF8E),
+      ),
+    );
+  }
+
+  Widget buildDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          Container(
+            height: 150,
+            child: DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color(0xFFA8DF8E),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
+              ),
+              child: Text(
+                '메뉴',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.home,
+              color: Colors.grey[850],
+            ),
+            title: Text('홈'),
+            onTap: () {
+              print('홈 눌림');
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.image,
+              color: Colors.grey[850],
+            ),
+            title: Text('사진보기'),
+            onTap: () {
+              print('사진보기 눌림');
+              Navigator.pop(context);
+            },
+            trailing: Icon(Icons.arrow_forward_ios),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void handleMenuItemClick(String selectedItem) {
+    print("Selected item: $selectedItem");
+  }
+}
+
+class HomeScreenContent extends StatelessWidget {
+  Widget buildDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          Container(
+            height: 150,
+            child: DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color(0xFFA8DF8E),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
+              ),
+              child: Text(
+                '메뉴',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.home,
+              color: Colors.grey[850],
+            ),
+            title: Text('홈'),
+            onTap: () {
+              print('홈 눌림');
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.image,
+              color: Colors.grey[850],
+            ),
+            title: Text('사진보기'),
+            onTap: () {
+              print('사진보기 눌림');
+              Navigator.pop(context);
+            },
+            trailing: Icon(Icons.arrow_forward_ios),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
@@ -65,15 +216,14 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Color(0xFFF3FDE8),
               child: Card(
                 elevation: 1.5,
-                color: Color(0xFFF3FDE8), // Card 색상 설정
+                color: Color(0xFFF3FDE8),
                 child: InkWell(
                   onTap: () {
-                    // 컨테이너를 탭했을 때 다이어로그 실행
                     showDialog(
-                        context: context,
-                        builder: (BuildContext context){
-                          return ServiceGuideDialog();
-                        },
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ServiceGuideDialog();
+                      },
                     );
                   },
                   child: Padding(
@@ -93,12 +243,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            SizedBox(height: 16), // 이미지와 그리드 사이 간격 조절
+            SizedBox(height: 16),
 
-            // 그리드로 카드 아이템 배치
             GridView.count(
-              crossAxisCount: 2, // 2열로 배치
-              shrinkWrap: true, // 그리드 크기를 내용에 맞게 조절
+              crossAxisCount: 2,
+              shrinkWrap: true,
               padding: EdgeInsets.only(left: 15, right: 15),
               children: [
                 Container(
@@ -112,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         // 카드 아이템을 탭했을 때 수행할 동작 추가
                       },
                       child: Container(
-                        alignment: Alignment.center, // 이미지를 수평 및 수직으로 중앙 정렬
+                        alignment: Alignment.center,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -209,83 +358,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '홈',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: '채팅',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'MY',
-          ),
-        ],
-        selectedItemColor: Color(0xFFA8DF8E),
-      ),
     );
-  }
-
-  Widget buildDrawer(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          Container(
-            height: 150,
-            child: DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color(0xFFA8DF8E),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-              ),
-              child: Text(
-                '메뉴', // '메뉴' 텍스트 색상 변경
-                style: TextStyle(
-                  color: Colors.white, // 텍스트 색상을 흰색으로 변경
-                  fontSize: 24,
-                ),
-              ),
-            ),
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.home,
-              color: Colors.grey[850],
-            ),
-            title: Text('홈'),
-            onTap: () {
-              print('홈 눌림');
-              Navigator.pop(context);
-            },
-          ),
-
-          // 사진보기 아이템
-          ListTile(
-            leading: Icon(
-              Icons.image,
-              color: Colors.grey[850],
-            ),
-            title: Text('사진보기'),
-            onTap: () {
-              print('사진보기 눌림');
-              Navigator.pop(context);
-            },
-            trailing: Icon(Icons.arrow_forward_ios),
-          ),
-        ],
-      ),
-    );
-  }
-
-
-  void handleMenuItemClick(String selectedItem) {
-    print("Selected item: $selectedItem");
   }
 }
