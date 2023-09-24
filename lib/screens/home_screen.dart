@@ -10,20 +10,29 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  bool _appBarVisible = true; // AppBar 표시 여부를 관리하는 변수 추가
+
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      Navigator.pushNamed(context, _routeNames[index]);
     });
   }
 
-  static List<Widget> _widgetOptions = <Widget>[
+  static final List<String> _routeNames = <String>[
+    '/home', // 홈 화면 경로
+    '/chat', // 채팅 화면 경로
+    '/my',   // My 화면 경로
+  ];
+
+  static final List<Widget> _widgetOptions = <Widget>[
     HomeScreenContent(),
     ChatScreen(),
     MyProfile(),
   ];
 
-  static List<BottomNavigationBarItem> _bottomNavBarItems = <BottomNavigationBarItem>[
+  static final List<BottomNavigationBarItem> _bottomNavBarItems = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
       icon: Icon(Icons.home),
       label: '홈',
@@ -42,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       endDrawer: buildDrawer(context),
-      appBar: AppBar(
+      appBar: _appBarVisible ? AppBar( // _appBarVisible 상태에 따라 AppBar 표시 여부 결정
         iconTheme: IconThemeData(color: Colors.grey),
         backgroundColor: Colors.white,
         toolbarHeight: 65,
@@ -82,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           SizedBox(width: 15),
         ],
-      ),
+      ) : null, // _appBarVisible가 false이면 AppBar를 null로 설정하여 숨김
       body: _widgetOptions[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -146,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void handleMenuItemClick(String selectedItem) {
-    print("Selected item: $selectedItem");
+    print('Selected item: $selectedItem');
   }
 }
 
