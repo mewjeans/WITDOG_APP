@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:pet/screens/home_screen.dart';
 
 class MyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // When the back button is pressed, go to 'HomeScreen' and prevent the back action.
-        Navigator.pushNamedAndRemoveUntil(
+        await Navigator.pushNamedAndRemoveUntil(
           context,
-          '/home', // home screen path
-              (route) => false, // remove all previous routes from the stack
+          '/home',
+              (route) => false,
         );
-        return false; // Prevent back button action
+        return false;
       },
       child: Scaffold(
         appBar: AppBar(

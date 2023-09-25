@@ -3,14 +3,15 @@ import 'package:pet/screens/auth/login_screen.dart';
 import 'package:pet/screens/chat_screen.dart';
 import 'package:pet/screens/home_screen.dart';
 import 'package:pet/screens/my_profile.dart';
+import 'package:pet/screens/register_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-Future<void> main() async {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
   await Supabase.initialize(
-    url: '[My_SUPABASE_URL]',
-    anonKey: '[My_SUPABASE_ANON_KEY]',
-  );
+      url: "",
+      anonKey: "");
   runApp(MyApp());
 }
 
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home': (context) => HomeScreen(),
         '/my': (context) => MyProfile(),
-        '/chat': (context) => ChatScreen()
+        '/chat': (context) => ChatScreen(),
+        '/login': (context) => LoginScreen(),
       },
       home: LoginScreen(),
     );
