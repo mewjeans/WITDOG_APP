@@ -10,7 +10,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  bool _appBarVisible = true; // AppBar 표시 여부를 관리하는 변수 추가
+  final bool _appBarVisible = true; // AppBar 표시 여부를 관리하는 변수 추가
 
 
   void _onItemTapped(int index) {

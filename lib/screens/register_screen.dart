@@ -12,7 +12,7 @@ class RegisterScreenPageState extends State<RegisterScreen> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   late TextEditingController _nameController;
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class RegisterScreenPageState extends State<RegisterScreen> {
       );
 
       // 회원가입이 성공하면 로그인 화면으로 이동
-      Navigator.of(context).pushReplacement(
+      await Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => LoginScreen(),
         ),
@@ -195,7 +195,6 @@ class RegisterScreenPageState extends State<RegisterScreen> {
                               fillColor: Colors.white,
                               filled: true,
                             ),
-                            onChanged: (value) {},
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return '이름을 입력하세요.';
