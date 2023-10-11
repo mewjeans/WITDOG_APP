@@ -1,16 +1,32 @@
 # pet
 
-petService
+WITDOG petService
 
-## Getting Started
+## 기능
+#### Auth
+##### - 로그인, 회원가입
 
-This project is a starting point for a Flutter application.
+#### Service
+##### - 채팅, 프로필
 
-A few resources to get you started if this is your first Flutter project:
+## Skill
+#### Database : Supabase(PostgreSql 기반)
+#### Splash 구현, Menu 구현(Drawer), routes 페이지 처리
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 프로젝트 디렉토리 구조
+````
+├─.dart_tool
+├─.idea
+├─android
+├─assets   // 이미지 관련
+│  ├─image
+│  └─logo
+├─build
+├─ios
+├─lib
+│  ├─models      // 데이터 구조
+│  ├─screens     // 화면 및 페이지 구성
+│  │  └─auth     // 로그인
+│  ├─utils       
+│  └─widgets     // 다이얼로그 위젯 
+└─test
