@@ -38,7 +38,7 @@ class RegisterScreenPageState extends State<RegisterScreen> {
       await supabase.auth.signUp(
         email: _emailController.text,
         password: _passwordController.text,
-        data: {'name' : _nameController.text.toLowerCase()},
+        data: {'username' : _nameController.text.toLowerCase()},
       );
 
       // 회원가입이 성공하면 로그인 화면으로 이동

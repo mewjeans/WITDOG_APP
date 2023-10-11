@@ -43,6 +43,8 @@ dependencies:
   supabase_flutter: ^1.10.6
   flutter_native_splash:
   adaptive_components: ^0.0.9
+  timeago: ^3.5.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
