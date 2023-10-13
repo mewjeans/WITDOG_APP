@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet/screens/register_screen.dart';
 import 'package:pet/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -21,6 +22,23 @@ class LoginScreenState extends State<LoginScreen> {
     super.initState();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+
+    _autoLogin();
+
+  }
+
+  _autoLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final savedEmail = prefs.getString('email');
+    final savedPassword = prefs.getString('password');
+
+    if (savedEmail != null && savedPassword != null) {
+      _emailController.text = savedEmail;
+      _passwordController.text = savedPassword;
+
+      // 자동 로그인 시도
+      _signIn();
+    }
   }
 
   @override
@@ -37,25 +55,27 @@ class LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = true;
       });
-      try{
-        await supabase.auth.signInWithPassword(
+      try {
+        final response = await supabase.auth.signInWithPassword(
           email: _emailController.text,
           password: _passwordController.text,
         );
 
-        print('로그인 성공'); // 디버그 메시지 추가
+        if (response.user != null) {
+          // 로그인에 성공하면 SharedPreferences에 사용자 데이터 저장
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString('email', _emailController.text);
+          prefs.setString('password', _passwordController.text);
 
-        _navigateToHome();
-
-      } on AuthException catch (error) {
-        // 에러 처리
-        print('AuthException: ${error.message}');
-        setState(() {
-          _isLoading = false;
-        });
+          print('로그인 성공');
+          _navigateToHome();
+        } else {
+          // 로그인에 실패한 경우 적절한 오류 처리
+          print('로그인 실패: ${response.toString()}');
+        }
       } catch (error) {
-        // 일반적인 오류 처리
         print('일반 오류: $error');
+      } finally {
         setState(() {
           _isLoading = false;
         });

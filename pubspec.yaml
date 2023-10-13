@@ -45,6 +45,9 @@ dependencies:
   adaptive_components: ^0.0.9
   timeago: ^3.5.0
   intl: ^0.18.1
+  flutter_secure_storage:
+  shared_preferences:
+
 
 dev_dependencies:
   flutter_test:

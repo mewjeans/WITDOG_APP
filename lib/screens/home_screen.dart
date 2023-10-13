@@ -295,7 +295,7 @@ class HomeScreenContent extends StatelessWidget {
                     elevation: 1.5,
                     child: InkWell(
                       onTap: () {
-                        // 카드 아이템을 탭했을 때 수행할 동작 추가
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen()));
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

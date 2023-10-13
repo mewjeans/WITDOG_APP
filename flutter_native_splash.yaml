@@ -4,3 +4,12 @@ flutter_native_splash:
   android_gravity: center
   ios_content_mode: center
   fullscreen: true
+
+
+# Android 12 이상 버전에서 적용
+  android_12:
+    color: "#F3FDE8"
+#    image: assets/logo/WITDOG_Logo.png
+#    android_gravity: center
+#    ios_content_mode: center
+#    fullscreen: false
