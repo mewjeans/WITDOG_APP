@@ -11,7 +11,7 @@ WITDOG petService
 
 ## Skill
 #### Database : Supabase(PostgreSql 기반)
-#### Splash 구현, Menu 구현(Drawer), routes 페이지 처리
+#### Splash 구현, Menu 구현(Drawer), routes 페이지 처리, AutoLogin
 
 ## 프로젝트 디렉토리 구조
 ````
