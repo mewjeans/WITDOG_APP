@@ -47,6 +47,7 @@ dependencies:
   intl: ^0.18.1
   flutter_secure_storage:
   shared_preferences:
+  agora_rtc_engine: ^6.2.3
 
 
 dev_dependencies:

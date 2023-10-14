@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pet/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthProvider with ChangeNotifier {
   bool _isLoading = false;
@@ -10,11 +13,33 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // 로그인 메서드
-  Future<void> login(String email, String password) async {
-    setLoading(true);
-    // TODO : login_screen 에있는 로그인 로직을 여기로 옮겨야함
+  void _navigateToHome(BuildContext context) {
+    Navigator.of(context).pushReplacementNamed('/home');
+  }
 
-    setLoading(false);
+  Future<void> login(String email, String password, BuildContext context) async {
+    setLoading(true);
+
+    try {
+      final response = await supabase.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+
+      if (response.user != null) {
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('email', email);
+        prefs.setString('password', password);
+
+        _navigateToHome(context);
+      } else {
+        print('로그인 실패: ${response.toString()}');
+      }
+    } catch (error) {
+      print('일반 오류: $error');
+    } finally {
+      setLoading(false);
+    }
   }
 }
+

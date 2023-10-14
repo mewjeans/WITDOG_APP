@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet/provider/auth_provider.dart';
 import 'package:pet/screens/register_screen.dart';
-import 'package:pet/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:provider/provider.dart' as provider;
 
 class LoginScreen extends StatefulWidget {
@@ -39,7 +37,9 @@ class LoginScreenState extends State<LoginScreen> {
       _passwordController.text = savedPassword;
 
       // 자동 로그인 시도
-      _signIn();
+      final authProvider = provider.Provider.of<AuthProvider>(context, listen: false);
+      authProvider.login(_emailController.text, _passwordController.text, context);
+
     }
   }
 
@@ -50,41 +50,6 @@ class LoginScreenState extends State<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
-  }
-
-  void _signIn() async {
-    final isValid = _formKey.currentState?.validate();
-
-    if (isValid != null && isValid) {
-      try {
-          provider.Provider.of<AuthProvider>(context, listen: false).setLoading(true);
-          final response = await supabase.auth.signInWithPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
-
-        if (response.user != null) {
-          // 로그인에 성공하면 SharedPreferences에 사용자 데이터 저장
-          final prefs = await SharedPreferences.getInstance();
-          prefs.setString('email', _emailController.text);
-          prefs.setString('password', _passwordController.text);
-
-          print('로그인 성공');
-          _navigateToHome();
-        } else {
-          // 로그인에 실패한 경우 적절한 오류 처리
-          print('로그인 실패: ${response.toString()}');
-        }
-      } catch (error) {
-        print('일반 오류: $error');
-      } finally {
-        provider.Provider.of<AuthProvider>(context, listen: false).setLoading(false);
-      }
-    }
-  }
-
-  void _navigateToHome() {
-    Navigator.of(context).pushReplacementNamed('/home');
   }
 
   @override
@@ -208,7 +173,10 @@ class LoginScreenState extends State<LoginScreen> {
 
   Widget _buildLoginButton(BuildContext context) {
     return ElevatedButton(
-      onPressed: _isLoading ? null : _signIn,
+      onPressed: _isLoading ? null : () {
+        final authProvider = provider.Provider.of<AuthProvider>(context, listen: false);
+        authProvider.login(_emailController.text, _passwordController.text, context);
+      },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40.0),
