@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pet/provider/auth_provider.dart';
 import 'package:pet/screens/register_screen.dart';
 import 'package:pet/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:provider/provider.dart' as provider;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -12,10 +14,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen> {
-  bool _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -41,6 +43,8 @@ class LoginScreenState extends State<LoginScreen> {
     }
   }
 
+
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -52,11 +56,9 @@ class LoginScreenState extends State<LoginScreen> {
     final isValid = _formKey.currentState?.validate();
 
     if (isValid != null && isValid) {
-      setState(() {
-        _isLoading = true;
-      });
       try {
-        final response = await supabase.auth.signInWithPassword(
+          provider.Provider.of<AuthProvider>(context, listen: false).setLoading(true);
+          final response = await supabase.auth.signInWithPassword(
           email: _emailController.text,
           password: _passwordController.text,
         );
@@ -76,9 +78,7 @@ class LoginScreenState extends State<LoginScreen> {
       } catch (error) {
         print('일반 오류: $error');
       } finally {
-        setState(() {
-          _isLoading = false;
-        });
+        provider.Provider.of<AuthProvider>(context, listen: false).setLoading(false);
       }
     }
   }
@@ -89,6 +89,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: const Color(0xFFF3FDE8),
       body: Center(

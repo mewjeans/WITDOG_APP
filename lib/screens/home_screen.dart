@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pet/screens/chat_screen.dart';
 import 'package:pet/screens/my_profile.dart';
 import 'package:pet/widgets/service_guide_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -18,6 +19,18 @@ class _HomeScreenState extends State<HomeScreen> {
       _selectedIndex = index;
       Navigator.pushNamed(context, _routeNames[index]);
     });
+  }
+  void _performLogout(BuildContext context) async {
+    // 로그아웃 시 사용자 데이터를 초기화하고 로그인 화면으로 이동
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('email');
+    prefs.remove('password');
+
+    // 여기에 로그아웃 이후의 동작을 추가할 수 있습니다.
+    // 예를 들어, 로그인 화면으로 이동하거나 다른 작업을 수행하는 등...
+
+    Navigator.pushNamedAndRemoveUntil(
+        context, '/login', (Route<dynamic> route) => false);
   }
 
   static final List<String> _routeNames = <String>[
@@ -149,6 +162,16 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             trailing: Icon(Icons.arrow_forward_ios),
           ),
+          ListTile(
+            leading: Icon(
+              Icons.logout,
+              color: Colors.grey[850],
+            ),
+            title: Text('로그아웃'),
+            onTap: () {
+              _performLogout(context);
+            }
+          )
         ],
       ),
     );
