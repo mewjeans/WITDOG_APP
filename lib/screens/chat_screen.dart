@@ -3,15 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:pet/models/message.dart';
 import 'package:pet/models/profile.dart';
 import 'package:pet/utils/constants.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timeago/timeago.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
 
   static Route<void> route() {
     return MaterialPageRoute(
-      builder: (context) => const ChatScreen(),
+      builder: (context) => ChatScreen(),
     );
   }
 

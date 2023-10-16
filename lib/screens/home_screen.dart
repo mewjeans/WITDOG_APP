@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet/screens/chat_screen.dart';
 import 'package:pet/screens/my_profile.dart';
+import 'package:pet/screens/video_index_screen.dart';
 import 'package:pet/widgets/service_guide_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,14 +23,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   void _performLogout(BuildContext context) async {
     // 로그아웃 시 사용자 데이터를 초기화하고 로그인 화면으로 이동
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('email');
-    prefs.remove('password');
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.remove('email');
+    await prefs.remove('password');
 
     // 여기에 로그아웃 이후의 동작을 추가할 수 있습니다.
     // 예를 들어, 로그인 화면으로 이동하거나 다른 작업을 수행하는 등...
 
-    Navigator.pushNamedAndRemoveUntil(
+    await Navigator.pushNamedAndRemoveUntil(
         context, '/login', (Route<dynamic> route) => false);
   }
 
@@ -37,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     '/home', // 홈 화면 경로
     '/chat', // 채팅 화면 경로
     '/my',   // My 화면 경로
+    '/videoCall' // 영상 통화 경로
   ];
 
   static final List<Widget> _widgetOptions = <Widget>[
@@ -290,7 +292,12 @@ class HomeScreenContent extends StatelessWidget {
                     elevation: 1.5,
                     child: InkWell(
                       onTap: () {
-                        // 카드 아이템을 탭했을 때 수행할 동작 추가
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ServiceGuideDialog();
+                          },
+                        );
                       },
                       child: Container(
                         alignment: Alignment.center,
@@ -343,7 +350,7 @@ class HomeScreenContent extends StatelessWidget {
                     elevation: 1.5,
                     child: InkWell(
                       onTap: () {
-                        // 카드 아이템을 탭했을 때 수행할 동작 추가
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => VideoIndexScreen()));
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -368,7 +375,12 @@ class HomeScreenContent extends StatelessWidget {
                     elevation: 1.5,
                     child: InkWell(
                       onTap: () {
-                        // 카드 아이템을 탭했을 때 수행할 동작 추가
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ServiceGuideDialog();
+                          },
+                        );
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

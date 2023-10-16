@@ -36,10 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   path:
-  get_it:
-  http:
   provider: ^6.0.5
-  flutter_chat_ui: ^1.6.9
   supabase_flutter: ^1.10.6
   flutter_native_splash:
   adaptive_components: ^0.0.9
@@ -48,6 +45,8 @@ dependencies:
   flutter_secure_storage:
   shared_preferences:
   agora_rtc_engine: ^6.2.3
+  permission_handler: ^11.0.1
+
 
 
 dev_dependencies:
@@ -79,6 +78,7 @@ flutter:
     - assets/image/dogList_image.png
     - assets/image/main_image.png
     - assets/image/video_chat_image.png
+    - assets/image/dog_video_call.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

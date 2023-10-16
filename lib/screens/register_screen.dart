@@ -4,10 +4,10 @@ import 'auth/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
-  RegisterScreenPageState createState() => RegisterScreenPageState();
+  _RegisterScreenPageState createState() => _RegisterScreenPageState();
 }
 
-class RegisterScreenPageState extends State<RegisterScreen> {
+class _RegisterScreenPageState extends State<RegisterScreen> {
   bool _isLoading = false;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;

@@ -28,8 +28,8 @@ class AuthProvider with ChangeNotifier {
 
       if (response.user != null) {
         final prefs = await SharedPreferences.getInstance();
-        prefs.setString('email', email);
-        prefs.setString('password', password);
+        await prefs.setString('email', email);
+        await prefs.setString('password', password);
 
         _navigateToHome(context);
       } else {

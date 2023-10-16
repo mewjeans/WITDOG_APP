@@ -15,7 +15,7 @@ class LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   @override
   void initState() {
@@ -27,8 +27,8 @@ class LoginScreenState extends State<LoginScreen> {
 
   }
 
-  _autoLogin() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  void _autoLogin() async {
+    var prefs = await SharedPreferences.getInstance();
     final savedEmail = prefs.getString('email');
     final savedPassword = prefs.getString('password');
 
@@ -38,12 +38,10 @@ class LoginScreenState extends State<LoginScreen> {
 
       // 자동 로그인 시도
       final authProvider = provider.Provider.of<AuthProvider>(context, listen: false);
-      authProvider.login(_emailController.text, _passwordController.text, context);
+      await authProvider.login(_emailController.text, _passwordController.text, context);
 
     }
   }
-
-
 
   @override
   void dispose() {
