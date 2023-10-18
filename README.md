@@ -9,7 +9,7 @@ WITDOG petService
 ### Service
 ##### - 채팅, 프로필, Menu 구현(Drawer), routes 페이지 처리
 ##### - Splash 구현, AutoLogin, Logout
-##### - Provider 적용
+##### - Provider 적용, zegoCloude를 통해 videoCall 구현
 
 ## Skill
 #### Database : Supabase(PostgreSql 기반)
@@ -26,6 +26,7 @@ WITDOG petService
 ├─ios
 ├─lib
 │  ├─models      // 데이터 구조
+│  ├─provider    // 상태관리
 │  ├─screens     // 화면 및 페이지 구성
 │  │  └─auth     // 로그인
 │  ├─utils       
