@@ -1,8 +1,12 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // supabase client
 final supabase = Supabase.instance.client;
+
+// videocall id
+final String localUserId = math.Random().nextInt(10000).toString();
 
 /// Simple sized box to space out form elements
 const formSpacer = SizedBox(width: 16, height: 16);

@@ -45,8 +45,8 @@ dependencies:
   intl: ^0.18.1
   flutter_secure_storage:
   shared_preferences:
-  flutter_webrtc: ^0.9.45
-  permission_handler: ^11.0.1
+  permission_handler: ^10.2.0
+  zego_uikit_prebuilt_call: ^3.16.0
 
 
 
