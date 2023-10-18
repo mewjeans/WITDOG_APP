@@ -1,7 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:pet/screens/chat_screen.dart';
 import 'package:pet/screens/my_profile.dart';
-import 'package:pet/screens/video_index_screen.dart';
 import 'package:pet/widgets/service_guide_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -350,7 +351,7 @@ class HomeScreenContent extends StatelessWidget {
                     elevation: 1.5,
                     child: InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => VideoIndexScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Text('text')));
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
