@@ -10,6 +10,7 @@ WITDOG petService
 ##### - 채팅, 프로필, Menu 구현(Drawer), routes 페이지 처리
 ##### - Splash 구현, AutoLogin, Logout
 ##### - Provider 적용, zegoCloude를 통해 videoCall 구현
+##### - 사용자 권한 앱 권한 적용
 
 ## Skill
 #### Database : Supabase(PostgreSql 기반)
