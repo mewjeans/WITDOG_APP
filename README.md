@@ -4,13 +4,12 @@ WITDOG petService
 
 ## 기능
 ### Auth
-##### - 로그인, 회원가입
+##### - 로그인, 회원가입, 자동로그인, 로그아웃
 
 ### Service
-##### - 채팅, 프로필, Menu 구현(Drawer), routes 페이지 처리
-##### - Splash 구현, AutoLogin, Logout
-##### - Provider 적용, zegoCloude를 통해 videoCall 구현
-##### - 사용자 권한 앱 권한 적용
+##### - 채팅, 채팅 프로필, Menu 구현(Drawer)
+##### - Splash 구현, Provider 적용, routes 페이지 처리
+##### - zegoCloude를 통해 videoCall 구현, 사용자 권한 앱 권한 적용
 
 ## Skill
 #### Database : Supabase(PostgreSql 기반)
