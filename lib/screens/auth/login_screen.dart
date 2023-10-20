@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:pet/gen/assets.gen.dart';
 import 'package:pet/provider/auth_provider.dart';
+import 'package:pet/screens/home_screen.dart';
 import 'package:pet/screens/register_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart' as provider;
@@ -72,7 +76,7 @@ class LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Image.asset('assets/logo/WITDOG_Logo.png'),
+            Assets.logo.wITDOGLogo.image(),
             Container(
               padding: const EdgeInsets.only(top: 10.0),
               child: TextFormField(
@@ -105,7 +109,6 @@ class LoginScreenState extends State<LoginScreen> {
                   }
                   return null;
                 },
-                onSaved: (value) => {},
               ),
             ),
             Container(
@@ -140,16 +143,17 @@ class LoginScreenState extends State<LoginScreen> {
                     return '비밀번호를 입력하세요.';
                   }
                   return null;
-                },
-                onSaved: (value) => {
-
-                },
+                }
               ),
             ),
             SizedBox.fromSize(
               size: const Size(0, 10),
             ),
             _buildLoginButton(context),
+            SizedBox.fromSize(
+              size: const Size(0, 5),
+            ),
+            _buildKakaoLoginButton(context),
             SizedBox.fromSize(
               size: const Size(0, 5),
             ),
@@ -191,6 +195,31 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Widget _buildKakaoLoginButton(BuildContext context) {
+    return GestureDetector(
+      onTap: _isLoading
+          ? null
+          : () async {
+        // 카카오 로그인 시도
+        await _kakaologin();
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(40.0), // 모서리를 둥글게 깍는 부분
+        ),
+        child: ClipRRect( // 모서리 둥글게 깍는데 사용
+          borderRadius: BorderRadius.circular(40.0),
+          child: Assets.logo.kakaoLogin.image(
+            height: 40,
+            fit: BoxFit.cover, // 이미지를 부모 컨테이너에 맞게 늘리기
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
   Widget _buildRegisterButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
@@ -212,5 +241,43 @@ class LoginScreenState extends State<LoginScreen> {
         style: TextStyle(fontSize: 20.0),
       ),
     );
+  }
+
+  Future<void> _kakaologin() async {
+    if (await isKakaoTalkInstalled()) {
+      try {
+        await UserApi.instance.loginWithKakaoTalk();
+        print('카카오톡으로 로그인 성공');
+
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(), // 홈 화면으로 이동
+          ),
+        );
+      } catch (error) {
+        print('카카오톡으로 로그인 실패: $error');
+
+        // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+        // 의도적인 로그인 취소로 처리 (예: 뒤로 가기)
+        if (error is PlatformException && error.code == 'CANCELED') {
+          return;
+        }
+
+        // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
+        try {
+          await UserApi.instance.loginWithKakaoAccount();
+          print('카카오계정으로 로그인 성공');
+        } catch (error) {
+          print('카카오계정으로 로그인 실패: $error');
+        }
+      }
+    } else {
+      try {
+        await UserApi.instance.loginWithKakaoAccount();
+        print('카카오계정으로 로그인 성공');
+      } catch (error) {
+        print('카카오계정으로 로그인 실패: $error');
+      }
+    }
   }
 }

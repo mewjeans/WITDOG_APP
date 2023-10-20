@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:pet/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:pet/screens/auth/login_screen.dart';
@@ -10,7 +11,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
-
+  KakaoSdk.init(nativeAppKey: 'f0f25eb9881f2e8cbc32c04f7736b431');
   var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 

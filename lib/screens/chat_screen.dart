@@ -67,7 +67,14 @@ class _ChatPageState extends State<ChatScreen> {
         return false;
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Chat')),
+        appBar: AppBar(title: const Text('채팅',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Color(0xFFF3FDE8),
+        ),
         body: Column(
           children: [
             Expanded(

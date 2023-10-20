@@ -4,7 +4,7 @@ WITDOG petService
 
 ## 기능
 ### Auth
-##### - 로그인, 회원가입, 자동로그인, 로그아웃
+##### - 로그인, 회원가입, 자동로그인, 로그아웃, kakao login 구현
 
 ### Service
 ##### - 채팅, 채팅 프로필, Menu 구현(Drawer)
@@ -25,6 +25,7 @@ WITDOG petService
 ├─build
 ├─ios
 ├─lib
+│  ├─gen         // 이미지 경로 등을 보다 안전하고 효율적으로 사용하기 위해 적용함
 │  ├─models      // 데이터 구조
 │  ├─provider    // 상태관리
 │  ├─screens     // 화면 및 페이지 구성
