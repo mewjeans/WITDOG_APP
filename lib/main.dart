@@ -6,12 +6,12 @@ import 'package:provider/provider.dart';
 import 'package:pet/screens/auth/login_screen.dart';
 import 'package:pet/screens/chat_screen.dart';
 import 'package:pet/screens/home_screen.dart';
-import 'package:pet/screens/my_profile.dart';
+import 'package:pet/screens/my_profile_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
-  KakaoSdk.init(nativeAppKey: 'f0f25eb9881f2e8cbc32c04f7736b431');
+  KakaoSdk.init(nativeAppKey: '8af072c461ea48f446fa772d0662a93e');
   var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/home': (context) => HomeScreen(),
-        '/my': (context) => MyProfile(),
+        '/my': (context) => MyProfileScreen(),
         '/chat': (context) => ChatScreen(),
         '/login': (context) => LoginScreen(),
         //'/videoIndex': (context) => VideoIndexScreen(),

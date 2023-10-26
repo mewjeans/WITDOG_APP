@@ -3,7 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pet/screens/chat_screen.dart';
-import 'package:pet/screens/my_profile.dart';
+import 'package:pet/screens/my_profile_screen.dart';
 import 'package:pet/screens/video_home_screen.dart';
 import 'package:pet/widgets/service_guide_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreenContent(),
     ChatScreen(),
-    MyProfile(),
+    MyProfileScreen(),
   ];
 
   static final List<BottomNavigationBarItem> _bottomNavBarItems = <BottomNavigationBarItem>[

@@ -48,6 +48,7 @@ dependencies:
   permission_handler: ^10.2.0
   zego_uikit_prebuilt_call: ^3.16.0
   kakao_flutter_sdk: ^1.6.1
+  image_picker: ^1.0.4
 
 
 
