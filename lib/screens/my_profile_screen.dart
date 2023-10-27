@@ -125,6 +125,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 ),
               ),
             ),
+            // TODO : DB에서 데이터 불러올 예정
             Card(
               elevation: 2,
               margin: EdgeInsets.all(30),
