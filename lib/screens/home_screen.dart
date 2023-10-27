@@ -1,10 +1,10 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:pet/screens/chat_screen.dart';
 import 'package:pet/screens/my_profile_screen.dart';
+import 'package:pet/screens/pet_profile_screen.dart';
 import 'package:pet/screens/video_home_screen.dart';
+import 'package:pet/widgets/buttom_navbar_items.dart';
+import 'package:pet/widgets/route_names.dart';
 import 'package:pet/widgets/service_guide_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,11 +17,10 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   final bool _appBarVisible = true; // AppBar 표시 여부를 관리하는 변수 추가
 
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      Navigator.pushNamed(context, _routeNames[index]);
+      Navigator.pushNamed(context, RouteNames.routeNames[index]);
     });
   }
   void _performLogout(BuildContext context) async {
@@ -37,32 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
         context, '/login', (Route<dynamic> route) => false);
   }
 
-  static final List<String> _routeNames = <String>[
-    '/home', // 홈 화면 경로
-    '/chat', // 채팅 화면 경로
-    '/my',   // My 화면 경로
-    '/videoCall' // 영상 통화 경로
-  ];
-
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreenContent(),
     ChatScreen(),
     MyProfileScreen(),
-  ];
-
-  static final List<BottomNavigationBarItem> _bottomNavBarItems = <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home),
-      label: '홈',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.chat),
-      label: '채팅',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: 'MY',
-    ),
+    PetProfileScreen(),
   ];
 
   @override
@@ -109,13 +87,18 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           SizedBox(width: 15),
         ],
-      ) : null, // _appBarVisible가 false이면 AppBar를 null로 설정하여 숨김
+      ) : null,
       body: _widgetOptions[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        items: _bottomNavBarItems,
+        items: bottomNavBarItems,
         onTap: _onItemTapped,
         selectedItemColor: Color(0xFFA8DF8E),
+        showUnselectedLabels: _appBarVisible,
+        unselectedItemColor: Colors.grey,
+        unselectedLabelStyle: TextStyle(
+        color: Colors.grey
+        ),
       ),
     );
   }
@@ -380,12 +363,7 @@ class HomeScreenContent extends StatelessWidget {
                     elevation: 1.5,
                     child: InkWell(
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return ServiceGuideDialog();
-                          },
-                        );
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => PetProfileScreen()));
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -393,7 +371,7 @@ class HomeScreenContent extends StatelessWidget {
                           Image.asset('assets/image/dogList_image.png',
                               width: 100, height: 100),
                           Text(
-                            '반려 목록',
+                            '반려 프로필',
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500),
                           ),

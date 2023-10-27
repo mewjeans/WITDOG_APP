@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pet/utils/constants.dart';
-import 'package:pet/utils/settings.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 class VideoCallScreen extends StatefulWidget{
