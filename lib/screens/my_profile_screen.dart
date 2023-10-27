@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:pet/widgets/buttom_navbar_items.dart';
+import 'package:pet/widgets/route_names.dart';
 
-class MyProfileScreen extends StatelessWidget {
+class MyProfileScreen extends StatefulWidget {
+  @override
+  _MyProfileScreenState createState() => _MyProfileScreenState();
+}
+
+class _MyProfileScreenState extends State<MyProfileScreen> {
+  int _selectedIndex = 2; // 초기 선택 인덱스
+  final bool _appBarVisible = true;
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -8,7 +18,7 @@ class MyProfileScreen extends StatelessWidget {
         await Navigator.pushNamedAndRemoveUntil(
           context,
           '/home',
-          (route) => false,
+              (route) => false,
         );
         return false;
       },
@@ -28,12 +38,26 @@ class MyProfileScreen extends StatelessWidget {
             },
           ),
         ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          items: bottomNavBarItems,
+          onTap: _onItemTapped,
+          selectedItemColor: Color(0xFFA8DF8E),
+          showUnselectedLabels: _appBarVisible,
+          unselectedItemColor: Colors.grey,
+          unselectedLabelStyle: TextStyle(
+              color: Colors.grey
+          ),
+        ),
         body: Column(
           children: [
             Container(
               constraints: BoxConstraints(
-                minHeight:135,
-                minWidth: MediaQuery.of(context).size.width,
+                minHeight: 135,
+                minWidth: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
               ),
               child: Center(
                 child: Stack(
@@ -42,20 +66,19 @@ class MyProfileScreen extends StatelessWidget {
                     Icon(
                       Icons.account_circle,
                       color: Color(0xFFDDFFB8),
-                      size: 100, // "account_circle" 아이콘 크기 조절
+                      size: 100,
                     ),
                     Positioned(
-                      top: 65, // "edit" 아이콘의 위쪽 여백 조절
-                      right: 5, // "edit" 아이콘의 오른쪽 여백 조절
+                      top: 65,
+                      right: 5,
                       child: Container(
-                        padding: EdgeInsets.all(5), // 테두리 주위에 여백 추가
+                        padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           color: Color(0xFFA8DF8E),
                           borderRadius: BorderRadius.circular(10),
-                          // 라운드된 모서리 설정
                           border: Border.all(
                             color: Color(0xFFA8DF8E),
-                            width: 2, // 테두리 두께 설정
+                            width: 2,
                           ),
                         ),
                         child: Stack(
@@ -63,8 +86,8 @@ class MyProfileScreen extends StatelessWidget {
                           children: [
                             Icon(
                               Icons.mode_edit_outline,
-                              size: 17, // "edit" 아이콘 크기 조절
-                              color: Colors.white, // "edit" 아이콘 색상 설정 (예: 빨간색)
+                              size: 17,
+                              color: Colors.white,
                             ),
                           ],
                         ),
@@ -74,12 +97,11 @@ class MyProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-
             Container(
               child: Text(
                 '홍길동',
                 style: TextStyle(
-                  fontSize: 16, // 텍스트 크기 조절
+                  fontSize: 16,
                 ),
               ),
             ),
@@ -91,10 +113,10 @@ class MyProfileScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Color(0xFFF3FDE8),
                 border: Border.all(
-                  color: Color(0xFFA8DF8E), // 테두리 색상 설정
-                  width: 1, // 테두리 두께 설정
+                  color: Color(0xFFA8DF8E),
+                  width: 1,
                 ),
-                borderRadius: BorderRadius.circular(10), // 라운드된 모서리 설정
+                borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
                 '프로필 관리',
@@ -104,20 +126,14 @@ class MyProfileScreen extends StatelessWidget {
               ),
             ),
             Card(
-              elevation: 2, // 카드의 그림자 높이 설정
-              margin: EdgeInsets.all(30), // 카드 주위의 여백 설정
+              elevation: 2,
+              margin: EdgeInsets.all(30),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
                 children: [
-                  Text(
-                    '프로필',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  SizedBox(height: 20),
                   ListTile(
                     title: Row(
                       children: [
@@ -149,11 +165,16 @@ class MyProfileScreen extends StatelessWidget {
                 ],
               ),
             )
-
-
           ],
         ),
       ),
     );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      Navigator.pushNamed(context, RouteNames.routeNames[index]);
+    });
   }
 }
