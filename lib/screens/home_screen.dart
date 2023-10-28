@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pet/screens/chat_screen.dart';
-import 'package:pet/screens/my_profile_screen.dart';
-import 'package:pet/screens/pet_profile_screen.dart';
+import 'package:pet/screens/profile/users/user_profile_screen.dart';
+import 'package:pet/screens/profile/pets/pet_profile_screen.dart';
+import 'package:pet/screens/routing/routing_helper.dart';
 import 'package:pet/screens/video_home_screen.dart';
 import 'package:pet/widgets/buttom_navbar_items.dart';
 import 'package:pet/widgets/route_names.dart';
@@ -18,11 +19,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final bool _appBarVisible = true; // AppBar 표시 여부를 관리하는 변수 추가
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      Navigator.pushNamed(context, RouteNames.routeNames[index]);
-    });
+    routingHelper(context, index, _selectedIndex);
   }
+
   void _performLogout(BuildContext context) async {
     // 로그아웃 시 사용자 데이터를 초기화하고 로그인 화면으로 이동
     var prefs = await SharedPreferences.getInstance();
@@ -39,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreenContent(),
     ChatScreen(),
-    MyProfileScreen(),
+    UserProfileScreen(),
     PetProfileScreen(),
   ];
 

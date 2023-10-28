@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:pet/screens/routing/routing_helper.dart';
 import 'package:pet/widgets/buttom_navbar_items.dart';
 import 'package:pet/widgets/route_names.dart';
 
-class MyProfileScreen extends StatefulWidget {
+class UserProfileScreen extends StatefulWidget {
   @override
-  _MyProfileScreenState createState() => _MyProfileScreenState();
+  _UserProfileScreenState createState() => _UserProfileScreenState();
 }
 
-class _MyProfileScreenState extends State<MyProfileScreen> {
+class _UserProfileScreenState extends State<UserProfileScreen> {
   int _selectedIndex = 2; // 초기 선택 인덱스
   final bool _appBarVisible = true;
+
+  void _onItemTapped(int index) {
+    routingHelper(context, index, _selectedIndex);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,12 +175,5 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         ),
       ),
     );
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      Navigator.pushNamed(context, RouteNames.routeNames[index]);
-    });
   }
 }

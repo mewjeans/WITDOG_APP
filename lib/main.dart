@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:pet/provider/auth_provider.dart';
-import 'package:pet/screens/pet_profile_screen.dart';
+import 'package:pet/screens/profile/pets/pet_profile_screen.dart';
 import 'package:pet/screens/video_home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:pet/screens/auth/login_screen.dart';
 import 'package:pet/screens/chat_screen.dart';
 import 'package:pet/screens/home_screen.dart';
-import 'package:pet/screens/my_profile_screen.dart';
+import 'package:pet/screens/profile/users/user_profile_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/home': (context) => HomeScreen(),
-        '/my': (context) => MyProfileScreen(),
+        '/my': (context) => UserProfileScreen(),
         '/chat': (context) => ChatScreen(),
         '/login': (context) => LoginScreen(),
         '/pet': (context) => PetProfileScreen(),

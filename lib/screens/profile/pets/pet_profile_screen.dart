@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pet/screens/routing/routing_helper.dart';
 import 'package:pet/widgets/buttom_navbar_items.dart';
 import 'package:pet/widgets/route_names.dart';
 
@@ -11,6 +12,10 @@ class PetProfileScreen extends StatefulWidget{
 class _PetProfileScreenState extends State<PetProfileScreen> {
   int _selectedIndex = 3; // 초기 선택 인덱스
   final bool _appBarVisible = true;
+
+  void _onItemTapped(int index) {
+    routingHelper(context, index, _selectedIndex);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,34 +103,25 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                 ),
               ),
             ),
-            Container(
-              child: Text(
-                '홍길동',
-                style: TextStyle(
-                  fontSize: 16,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '수정하기 | ',
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
                 ),
-              ),
+                Text(
+                  '삭제하기',
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(width: 10),
+              ],
             ),
-            SizedBox(height: 10),
-            Container(
-              width: 100,
-              height: 25,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Color(0xFFF3FDE8),
-                border: Border.all(
-                  color: Color(0xFFA8DF8E),
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                '프로필 관리',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-            ),
+
             Card(
               elevation: 2,
               margin: EdgeInsets.all(30),
@@ -147,20 +143,29 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                   ListTile(
                     title: Row(
                       children: [
-                        Text('이메일'),
+                        Text('생년월일'),
                         SizedBox(width: 40),
                       ],
                     ),
-                    subtitle: Text('test@test.com'),
+                    subtitle: Text('2023년 10월 22일'),
                   ),
                   ListTile(
                     title: Row(
                       children: [
-                        Text('가입일'),
+                        Text('반려견 품종'),
                         SizedBox(width: 40),
                       ],
                     ),
-                    subtitle: Text('2023-10-26'),
+                    subtitle: Text('시츄'),
+                  ),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        Text('반려견 나이'),
+                        SizedBox(width: 40),
+                      ],
+                    ),
+                    subtitle: Text('4살'),
                   ),
                   SizedBox(height: 20),
                 ],
@@ -170,12 +175,5 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
         ),
       ),
     );
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      Navigator.pushNamed(context, RouteNames.routeNames[index]);
-    });
   }
 }
