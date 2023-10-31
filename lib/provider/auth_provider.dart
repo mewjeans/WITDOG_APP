@@ -4,7 +4,6 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:pet/screens/home_screen.dart';
 import 'package:pet/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthProvider with ChangeNotifier {
   bool _isLoading = false;
@@ -53,12 +52,12 @@ class AuthProvider with ChangeNotifier {
 
         // 카카오 사용자 정보 가져오기
         try {
-          final user = await UserApi.instance.me();
+          //final user = await UserApi.instance.me();
 
           // 카카오 사용자 정보를 Supabase 데이터베이스에 저장
           //await _saveKakaoUserInfo(user);
 
-          Navigator.of(context).pushReplacement(
+          await Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => HomeScreen(), // 홈 화면으로 이동
             ),
@@ -93,7 +92,7 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-// 카카오 사용자 정보를 Supabase 데이터베이스에 저장
+// TODO : 카카오 사용자 정보를 Supabase 데이터베이스에 저장 할지 말지 정해야 함
 /*  Future<void> _saveKakaoUserInfo(User user) async {
     // user.id: 사용자의 카카오 회원번호
     // user.kakaoAccount?.profile?.nickname: 사용자의 카카오 닉네임

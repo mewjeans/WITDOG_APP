@@ -8,9 +8,6 @@ final supabase = Supabase.instance.client;
 // videocall id
 final String localUserId = math.Random().nextInt(10000).toString();
 
-/// Simple sized box to space out form elements
-const formSpacer = SizedBox(width: 16, height: 16);
-
 const preloader =
 Center(child: CircularProgressIndicator(color: Colors.orange));
 

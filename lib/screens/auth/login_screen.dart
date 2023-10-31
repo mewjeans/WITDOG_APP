@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pet/gen/assets.gen.dart';
 import 'package:pet/provider/auth_provider.dart';
-import 'package:pet/screens/home_screen.dart';
 import 'package:pet/screens/register_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart' as provider;

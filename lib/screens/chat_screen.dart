@@ -41,8 +41,7 @@ class _ChatPageState extends State<ChatScreen> {
     if (_profileCache[profileId] != null) {
       return;
     }
-    final data =
-    await supabase.from('profiles').select().eq('id', profileId).single();
+    final data = await supabase.from('profiles').select().eq('id', profileId).single();
     final profile = Profile.fromMap(data);
     setState(() {
       _profileCache[profileId] = profile;

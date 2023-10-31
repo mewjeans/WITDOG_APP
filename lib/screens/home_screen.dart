@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pet/screens/chat_screen.dart';
 import 'package:pet/screens/profile/users/user_profile_screen.dart';
-import 'package:pet/screens/profile/pets/pet_profile_screen.dart';
+import 'package:pet/screens/profile/pets/pet_profile_list_screen.dart';
 import 'package:pet/screens/routing/routing_helper.dart';
 import 'package:pet/screens/video_home_screen.dart';
 import 'package:pet/widgets/buttom_navbar_items.dart';
-import 'package:pet/widgets/route_names.dart';
 import 'package:pet/widgets/service_guide_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
   final bool _appBarVisible = true; // AppBar 표시 여부를 관리하는 변수 추가
 
   void _onItemTapped(int index) {
@@ -39,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     HomeScreenContent(),
     ChatScreen(),
     UserProfileScreen(),
-    PetProfileScreen(),
+    PetProfileListScreen(),
   ];
 
   @override
@@ -362,7 +361,7 @@ class HomeScreenContent extends StatelessWidget {
                     elevation: 1.5,
                     child: InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => PetProfileScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => PetProfileListScreen()));
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

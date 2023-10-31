@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pet/repository/profile_repository.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 import '../utils/constants.dart';
 import 'auth/login_screen.dart';
 
@@ -31,38 +34,56 @@ class _RegisterScreenPageState extends State<RegisterScreen> {
   }
 
   void _signUp() async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      await supabase.auth.signUp(
-        email: _emailController.text,
-        password: _passwordController.text,
-        data: {'username' : _nameController.text.toLowerCase()},
-      );
-
-      // 회원가입이 성공하면 로그인 화면으로 이동
-      await Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-      );
-    } catch (error) {
-      // 에러 처리 추가
-      print('회원 가입 오류: $error');
+    if (_isLoading) {
+      return; // 이미 회원가입 진행 중이면 중복 요청 방지
     }
 
     setState(() {
-      _isLoading = false;
+      _isLoading = true;
     });
+
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    final username = _nameController.text.toLowerCase();
+
+    try {
+      final response = await supabase.auth.signUp(
+        email: email,
+        password: password,
+        data: {'username': username},
+      );
+
+      if (response != null) {
+        final user = response.user;
+        if (user != null) {
+          final userId = user.id; // 사용자 ID 가져오기
+          final createdAt = DateTime.now();
+
+          await saveProfileToDatabase(userId, email, username, createdAt);
+
+            // 회원가입 성공 시 로그인 화면으로 이동
+            await Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => LoginScreen(),
+              ),
+            );
+          }
+        } else {
+          print('사용자가 null입니다.');
+      }
+
+    } catch (error) {
+      // 에러 처리 추가
+      print('회원 가입 중 오류: $error');
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFFF3FDE8),
-        body:
-        Container(
+        body: Container(
           key: _formKey,
           padding: const EdgeInsets.all(16),
           child: Form(
@@ -93,8 +114,8 @@ class _RegisterScreenPageState extends State<RegisterScreen> {
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40.0),
-                                  borderSide: BorderSide(
-                                      color: Colors.lightGreen),
+                                  borderSide:
+                                      BorderSide(color: Colors.lightGreen),
                                 ),
                                 errorBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40.0),
@@ -108,18 +129,6 @@ class _RegisterScreenPageState extends State<RegisterScreen> {
                                 fillColor: Colors.white,
                                 filled: true,
                               ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return '이메일을 입력하세요.';
-                                }
-                                final emailRegex = RegExp(
-                                  r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$',
-                                );
-                                if (!emailRegex.hasMatch(value)) {
-                                  return '올바른 이메일 형식이 아닙니다.';
-                                }
-                                return null;
-                              },
                             ),
                           ),
                           SizedBox(height: 10),
@@ -141,8 +150,8 @@ class _RegisterScreenPageState extends State<RegisterScreen> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(40.0),
-                                borderSide: BorderSide(
-                                    color: Colors.lightGreen),
+                                borderSide:
+                                    BorderSide(color: Colors.lightGreen),
                               ),
                               errorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(40.0),
@@ -157,13 +166,6 @@ class _RegisterScreenPageState extends State<RegisterScreen> {
                               filled: true,
                             ),
                             obscureText: true,
-                            onChanged: (value) {},
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return '비밀번호를 입력하세요.';
-                              }
-                              return null;
-                            },
                           ),
                           SizedBox(height: 10.0),
                           TextFormField(
@@ -180,8 +182,8 @@ class _RegisterScreenPageState extends State<RegisterScreen> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(40.0),
-                                borderSide: BorderSide(
-                                    color: Colors.lightGreen),
+                                borderSide:
+                                    BorderSide(color: Colors.lightGreen),
                               ),
                               errorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(40.0),
@@ -195,21 +197,15 @@ class _RegisterScreenPageState extends State<RegisterScreen> {
                               fillColor: Colors.white,
                               filled: true,
                             ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return '이름을 입력하세요.';
-                              }
-                              return null;
-                            },
                           ),
-
                           SizedBox(height: 16),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40.0),
                               ),
-                              minimumSize: const Size(double.infinity, 50), // 너비를 화면 너비로 설정
+                              minimumSize: const Size(double.infinity, 50),
+                              // 너비를 화면 너비로 설정
                               backgroundColor: const Color(0xFFA8DF8E),
                             ),
                             onPressed: () {
@@ -222,15 +218,12 @@ class _RegisterScreenPageState extends State<RegisterScreen> {
                               style: TextStyle(fontSize: 20.0),
                             ),
                           ),
-                        ]
-                    ),
+                        ]),
                   ),
                 )
               ],
             ),
           ),
-        )
-    );
+        ));
   }
 }
-
