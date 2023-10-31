@@ -28,7 +28,6 @@ dependencies:
   kakao_flutter_sdk: ^1.6.1
   image_picker: ^1.0.4
   change_app_package_name: ^1.1.0
-  uuid: ^3.0.7
 
 dev_dependencies:
   build_runner:

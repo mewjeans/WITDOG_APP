@@ -132,21 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             title: Text('홈'),
             onTap: () {
-              print('홈 눌림');
               Navigator.pop(context);
             },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.image,
-              color: Colors.grey[850],
-            ),
-            title: Text('사진보기'),
-            onTap: () {
-              print('사진보기 눌림');
-              Navigator.pop(context);
-            },
-            trailing: Icon(Icons.arrow_forward_ios),
           ),
           ListTile(
             leading: Icon(

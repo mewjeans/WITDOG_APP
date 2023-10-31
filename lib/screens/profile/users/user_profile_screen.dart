@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pet/screens/routing/routing_helper.dart';
 import 'package:pet/utils/constants.dart';
 import 'package:pet/widgets/buttom_navbar_items.dart';
@@ -18,6 +21,22 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   String username = '';
   String createdAt = '';
   bool _loading = false;
+
+  // 프로필 이미지
+  File? _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null){
+        _image = File(pickedFile.path);
+      } else {
+        print('이미지를 선택하지 않았습니다.');
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -40,11 +59,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             .select<Map<String, dynamic>>()
             .eq('id', userId)
             .single();
+        final createdAtISO = response['created_at'] as String; // 가입일 데이터(ISO 형식)
+        final createdAtd = DateTime.parse(createdAtISO);
+        final formattedDate = "${createdAtd.year}-${createdAtd.month.toString().padLeft(2, '0')}-${createdAtd.day.toString().padLeft(2, '0')}";
 
         setState(() {
           username = response['username'] as String;
           email = response['email'] as String;
-          createdAt = response['created_at'] as String;
+          createdAt = formattedDate;
         });
 
       }
@@ -112,46 +134,53 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
         ),
         body: Column(
-          children: [
+          children: <Widget>[
             Container(
               constraints: BoxConstraints(
                 minHeight: 135,
-                minWidth: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
+                minWidth: MediaQuery.of(context).size.width,
               ),
               child: Center(
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Icon(
-                      Icons.account_circle,
-                      color: Color(0xFFDDFFB8),
-                      size: 100,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFFDDFFB8),
+                        shape: BoxShape.circle,
+                      ),
+                      width: 100,
+                      height: 100,
+                      child: Icon(
+                        Icons.account_circle,
+                        color: Colors.white,
+                        size: 100,
+                      ),
                     ),
                     Positioned(
                       top: 65,
                       right: 5,
-                      child: Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFA8DF8E),
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
+                      child: GestureDetector(
+                        onTap: getImage,
+                        child: _image == null
+                            ? Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
                             color: Color(0xFFA8DF8E),
-                            width: 2,
-                          ),
-                        ),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(
-                              Icons.mode_edit_outline,
-                              size: 17,
-                              color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Color(0xFFA8DF8E),
+                              width: 2,
                             ),
-                          ],
+                          ),
+                          child: Icon(
+                            Icons.edit,
+                            size: 17,
+                            color: Colors.white,
+                          ),
+                        ) : CircleAvatar(
+                          radius: 50,
+                          backgroundImage: FileImage(_image!),
                         ),
                       ),
                     ),
