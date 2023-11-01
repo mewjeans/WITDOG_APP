@@ -68,9 +68,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           email = response['email'] as String;
           createdAt = formattedDate;
         });
-
       }
-
     } catch (error) {
       print('에러: $error'); // 에러 로그 출력
       if (error is UnimplementedError) {
@@ -89,7 +87,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       }
     }
   }
+  // TODO : 이미지 DB 넣는 작업 해야함
+  Future<void> _saveImage(File imageFile) async {
+    String fileName = 'profiles_image_${DateTime.now().microsecondsSinceEpoch}.jpg';
 
+    /*try {
+      final response = await supabase.from('profiles').upsert(values);
+    }*/
+  }
 
   void _onItemTapped(int index) {
     routingHelper(context, index, _selectedIndex);
@@ -157,37 +162,45 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         size: 100,
                       ),
                     ),
-                    Positioned(
-                      top: 65,
-                      right: 5,
-                      child: GestureDetector(
-                        onTap: getImage,
-                        child: _image == null
-                            ? Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFA8DF8E),
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: Color(0xFFA8DF8E),
-                              width: 2,
-                            ),
+                    if (_image != null)
+                      Positioned(
+                        child: GestureDetector(
+                          onTap: getImage,
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: FileImage(_image!),
                           ),
-                          child: Icon(
-                            Icons.edit,
-                            size: 17,
-                            color: Colors.white,
-                          ),
-                        ) : CircleAvatar(
-                          radius: 50,
-                          backgroundImage: FileImage(_image!),
                         ),
                       ),
-                    ),
+                    if (_image == null)
+                      Positioned(
+                        top: 65,
+                        right: 5,
+                        child: GestureDetector(
+                          onTap: getImage,
+                          child: Container(
+                            padding: EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFA8DF8E),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: Color(0xFFA8DF8E),
+                                width: 2,
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.edit,
+                              size: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
             ),
+
             Container(
               child: Text(
                username,
