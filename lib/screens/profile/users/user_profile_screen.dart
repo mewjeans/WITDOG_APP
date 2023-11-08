@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pet/repository/profile_repository.dart';
 import 'package:pet/screens/routing/routing_helper.dart';
 import 'package:pet/utils/constants.dart';
 import 'package:pet/widgets/buttom_navbar_items.dart';
@@ -25,6 +26,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   // 프로필 이미지
   File? _image;
   final picker = ImagePicker();
+
+  final user = supabase.auth.currentUser;
 
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -87,14 +90,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       }
     }
   }
-  // TODO : 이미지 DB 넣는 작업 해야함
-  Future<void> _saveImage(File imageFile) async {
-    String fileName = 'profiles_image_${DateTime.now().microsecondsSinceEpoch}.jpg';
-
-    /*try {
-      final response = await supabase.from('profiles').upsert(values);
-    }*/
-  }
 
   void _onItemTapped(int index) {
     routingHelper(context, index, _selectedIndex);
@@ -102,6 +97,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userId = user!.id;
     return WillPopScope(
       onWillPop: () async {
         await Navigator.pushNamedAndRemoveUntil(
@@ -165,10 +161,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     if (_image != null)
                       Positioned(
                         child: GestureDetector(
-                          onTap: getImage,
+                          onTap: () async {
+                            await saveProfileWithImageToDatabase(userId, _image!);
+                          },
                           child: CircleAvatar(
                             radius: 50,
-                            backgroundImage: FileImage(_image!),
+                            backgroundImage: _image != null ? FileImage(_image!) : null, // _image가 null인 경우 null 처리
                           ),
                         ),
                       ),
@@ -229,7 +227,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ),
               ),
             ),
-            // TODO : DB에서 데이터 가져와야함
             Card(
               elevation: 2,
               margin: EdgeInsets.all(30),
