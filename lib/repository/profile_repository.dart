@@ -28,11 +28,13 @@ Future<void> saveProfileToDatabase(String userId, String email, String username,
   }
 }
 
-// 사용자의 프로필 이미지 URL을 'public.profiles' 테이블에 저장하는 함수
+// 사용자의 프로필 이미지를 저장
 Future<void> saveProfileWithImageToDatabase(String userId ,File imageFile) async {
   try {
     List<int> imageBytes = await imageFile.readAsBytes();
     final imageUrl = 'data:image/jpeg;base64,${base64Encode(imageBytes)}';
+
+    print('Image URL: $imageUrl');
 
     final response = await supabase.from('images').upsert([
       {

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:pet/repository/profile_repository.dart';
 import 'package:pet/screens/routing/routing_helper.dart';
 import 'package:pet/utils/constants.dart';
 import 'package:pet/widgets/buttom_navbar_items.dart';
+import 'package:pet/widgets/fetch_profile_image.dart';
 
 class UserProfileScreen extends StatefulWidget {
   @override
@@ -13,7 +15,6 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-
   final int _selectedIndex = 2; // 초기 선택 인덱스
   final bool _appBarVisible = true;
 
@@ -25,26 +26,54 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   // 프로필 이미지
   File? _image;
+  String imageUrl = '';
   final picker = ImagePicker();
 
   final user = supabase.auth.currentUser;
 
+  Future<void> _uploadImageAndSaveProfile() async {
+    // 이미지가 선택되었을 때, 이미지를 업로드하고 프로필을 저장합니다.
+    if (_image != null) {
+      final userId = user!.id; // 현재 사용자 ID
+      await saveProfileWithImageToDatabase(userId, _image!); // 이미지를 업로드하고 저장
+    }
+  }
+
+  Future<void> _fetchAndUpdateImage() async {
+    final userId = user!.id;
+    final profileImage = await fetchProfileImage(userId);
+
+    if (profileImage != null && profileImage.isNotEmpty) {
+      final bytes = base64Decode(profileImage);
+      _image = File.fromRawPath(bytes);
+    }
+  }
+
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
+    if (pickedFile == null) {
+      print('이미지를 선택하지 않았습니다.');
+      return;
+    }
+
     setState(() {
-      if (pickedFile != null){
-        _image = File(pickedFile.path);
-      } else {
-        print('이미지를 선택하지 않았습니다.');
-      }
+      _image = File(pickedFile.path);
     });
+
+    _uploadImageAndSaveProfile();
+    _fetchAndUpdateImage();
   }
 
   @override
   void initState() {
     super.initState();
-    _getProfile();  // 사용자 정보 가져오기
+    _initProfile(); // 사용자 정보 가져오기
+  }
+
+  Future<void> _initProfile() async {
+    await _getProfile();
+    await _fetchAndUpdateImage();
   }
 
   Future<void> _getProfile() async {
@@ -64,13 +93,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             .single();
         final createdAtISO = response['created_at'] as String; // 가입일 데이터(ISO 형식)
         final createdAtd = DateTime.parse(createdAtISO);
-        final formattedDate = "${createdAtd.year}-${createdAtd.month.toString().padLeft(2, '0')}-${createdAtd.day.toString().padLeft(2, '0')}";
+        final formattedDate =
+            "${createdAtd.year}-${createdAtd.month.toString().padLeft(2, '0')}-${createdAtd.day.toString().padLeft(2, '0')}";
 
         setState(() {
           username = response['username'] as String;
           email = response['email'] as String;
           createdAt = formattedDate;
+          imageUrl = response['images'] as String;
         });
+
+        await _fetchAndUpdateImage();
       }
     } catch (error) {
       print('에러: $error'); // 에러 로그 출력
@@ -130,9 +163,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           selectedItemColor: Color(0xFFA8DF8E),
           showUnselectedLabels: _appBarVisible,
           unselectedItemColor: Colors.grey,
-          unselectedLabelStyle: TextStyle(
-              color: Colors.grey
-          ),
+          unselectedLabelStyle: TextStyle(color: Colors.grey),
         ),
         body: Column(
           children: <Widget>[
@@ -152,25 +183,26 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                       width: 100,
                       height: 100,
-                      child: Icon(
-                        Icons.account_circle,
-                        color: Colors.white,
-                        size: 100,
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundImage: _image != null
+                            ? FileImage(_image!)
+                            : NetworkImage(imageUrl) as ImageProvider<Object>,
                       ),
                     ),
                     if (_image != null)
                       Positioned(
                         child: GestureDetector(
-                          onTap: () async {
-                            await saveProfileWithImageToDatabase(userId, _image!);
-                          },
+                          onTap: () async {},
                           child: CircleAvatar(
                             radius: 50,
-                            backgroundImage: _image != null ? FileImage(_image!) : null, // _image가 null인 경우 null 처리
+                            backgroundImage: _image != null
+                                ? FileImage(_image!)
+                                : null, // _image가 null인 경우 null 처리
                           ),
                         ),
                       ),
-                    if (_image == null)
+                    if (imageUrl.isEmpty || _image == null)
                       Positioned(
                         top: 65,
                         right: 5,
@@ -198,10 +230,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ),
               ),
             ),
-
             Container(
               child: Text(
-               username,
+                username,
                 style: TextStyle(
                   fontSize: 16,
                 ),
