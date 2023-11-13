@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -27,6 +29,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   // 프로필 이미지
   File? _image;
   String imageUrl = '';
+  Uint8List? _imageBytes;
   final picker = ImagePicker();
 
   final user = supabase.auth.currentUser;
@@ -43,9 +46,27 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     final userId = user!.id;
     final profileImage = await fetchProfileImage(userId);
 
+    print('Profile Image: $profileImage');
+
     if (profileImage != null && profileImage.isNotEmpty) {
-      final bytes = base64Decode(profileImage);
-      _image = File.fromRawPath(bytes);
+      // "data:image/jpeg;base64," 부분을 제거
+      final imageDataWithoutPrefix = profileImage.split(',').last;
+      print('이미지 디코딩 : $base64Decode(imageDataWithoutPrefix)');
+
+      try {
+        final bytes = base64Decode(imageDataWithoutPrefix);
+
+        setState(() {
+          _imageBytes = bytes;
+        });
+
+        print('Image fetched and assigned successfully');
+      } catch (e) {
+        print('Error fetching and updating image: $e');
+        print('Error decoding base64 image: $e');
+      }
+    } else {
+      print('Image fetch failed or empty.');
     }
   }
 
@@ -91,7 +112,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             .select<Map<String, dynamic>>()
             .eq('id', userId)
             .single();
-        final createdAtISO = response['created_at'] as String; // 가입일 데이터(ISO 형식)
+        final createdAtISO =
+            response['created_at'] as String; // 가입일 데이터(ISO 형식)
         final createdAtd = DateTime.parse(createdAtISO);
         final formattedDate =
             "${createdAtd.year}-${createdAtd.month.toString().padLeft(2, '0')}-${createdAtd.day.toString().padLeft(2, '0')}";
@@ -136,7 +158,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         await Navigator.pushNamedAndRemoveUntil(
           context,
           '/home',
-              (route) => false,
+          (route) => false,
         );
         return false;
       },
@@ -185,22 +207,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       height: 100,
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundImage: _image != null
-                            ? FileImage(_image!)
-                            : NetworkImage(imageUrl) as ImageProvider<Object>,
-                      ),
+                        backgroundImage: _imageBytes != null
+                          ? MemoryImage(Uint8List.fromList(_imageBytes!))
+                          : AssetImage('assets/icon/default_user_icon.png') as ImageProvider),
                     ),
                     if (_image != null)
                       Positioned(
                         child: GestureDetector(
-                          onTap: () async {},
-                          child: CircleAvatar(
-                            radius: 50,
-                            backgroundImage: _image != null
-                                ? FileImage(_image!)
-                                : null, // _image가 null인 경우 null 처리
-                          ),
-                        ),
+                            onTap: () async {},
+                            child: buildProfileImage(userId)),
                       ),
                     if (imageUrl.isEmpty || _image == null)
                       Positioned(

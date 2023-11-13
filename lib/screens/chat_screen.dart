@@ -6,7 +6,6 @@ import 'package:pet/utils/constants.dart';
 import 'package:timeago/timeago.dart';
 
 class ChatScreen extends StatefulWidget {
-
   static Route<void> route() {
     return MaterialPageRoute(
       builder: (context) => ChatScreen(),
@@ -30,8 +29,8 @@ class _ChatPageState extends State<ChatScreen> {
         .stream(primaryKey: ['id'])
         .order('created_at')
         .map((maps) => maps
-        .map((map) => Message.fromMap(map: map, myUserId: myUserId))
-        .toList());
+            .map((map) => Message.fromMap(map: map, myUserId: myUserId))
+            .toList());
 
     _textController = TextEditingController();
     super.initState();
@@ -41,7 +40,8 @@ class _ChatPageState extends State<ChatScreen> {
     if (_profileCache[profileId] != null) {
       return;
     }
-    final data = await supabase.from('profiles').select().eq('id', profileId).single();
+    final data =
+        await supabase.from('profiles').select().eq('id', profileId).single();
     final profile = Profile.fromMap(data);
     setState(() {
       _profileCache[profileId] = profile;
@@ -61,18 +61,27 @@ class _ChatPageState extends State<ChatScreen> {
         await Navigator.pushNamedAndRemoveUntil(
           context,
           '/home',
-              (route) => false,
+          (route) => false,
         );
         return false;
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('채팅',
-          style: TextStyle(
-            color: Colors.black,
+        appBar: AppBar(
+          title: const Text(
+            '채팅',
+            style: TextStyle(
+              color: Colors.black,
+            ),
           ),
-        ),
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Color(0xFFF3FDE8),
+          iconTheme: IconThemeData(color: Colors.black),
+          backgroundColor: Color(0xFFF3FDE8),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/home', (route) => false);
+            },
+          ),
         ),
         body: Column(
           children: [
@@ -254,7 +263,7 @@ class _ChatBubble extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 18),
       child: Row(
         mainAxisAlignment:
-        message.isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
+            message.isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: chatContents,
       ),
     );

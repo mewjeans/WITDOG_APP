@@ -48,6 +48,7 @@ flutter:
     - assets/image/main_image.png
     - assets/image/video_chat_image.png
     - assets/image/dog_video_call.png
+    - assets/icon/default_user_icon.png
 
   
   

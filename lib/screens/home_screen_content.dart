@@ -76,15 +76,15 @@ class HomeScreenContent extends StatelessWidget {
   }
 
   Widget buildMobileLayout(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              height: 220,
-              color: Color(0xFFF3FDE8),
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          expandedHeight: 220,
+          pinned: true,
+          floating: false,
+          flexibleSpace: FlexibleSpaceBar(
+            background: Container(
+              color:  Color(0xFFF3FDE8).withOpacity(1.0),
               child: Card(
                 elevation: 1.5,
                 color: Color(0xFFF3FDE8),
@@ -98,7 +98,7 @@ class HomeScreenContent extends StatelessWidget {
                     );
                   },
                   child: Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.all(1),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -113,146 +113,82 @@ class HomeScreenContent extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 16),
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              padding: EdgeInsets.only(left: 15, right: 15),
-              children: [
-                Container(
-                  width: 200,
-                  height: 120,
-                  child: Card(
-                    color: Color(0xFFF3FDE8),
-                    elevation: 1.5,
-                    child: InkWell(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return ServiceGuideDialog();
-                          },
-                        );
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/image/dogLang_image.png',
-                                width: 100, height: 100),
-                            Text(
-                              '언어 번역',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 200,
-                  height: 120,
-                  child: Card(
-                    color: Color(0xFFF3FDE8),
-                    elevation: 1.5,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChatScreen()));
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset('assets/image/chat_image.png',
-                              width: 100, height: 100),
-                          Text(
-                            '채팅',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 200,
-                  height: 120,
-                  child: Card(
-                    color: Color(0xFFF3FDE8),
-                    elevation: 1.5,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                              return VideoHomeScreen();
-                            }));
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset('assets/image/video_chat_image.png',
-                              width: 100, height: 100),
-                          Text(
-                            '영상 통화',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 200,
-                  height: 120,
-                  child: Card(
-                    color: Color(0xFFF3FDE8),
-                    elevation: 1.5,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PetProfileListScreen()));
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset('assets/image/dogList_image.png',
-                              width: 100, height: 100),
-                          Text(
-                            '반려 프로필',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+          ),
+        ),
+        SliverPadding(
+          padding: EdgeInsets.all(10),
+          sliver: SliverGrid.count(
+            crossAxisCount: 2,
+            children: [
+              buildCard(
+                context,
+                '언어 번역',
+                'assets/image/dogLang_image.png',
+                ServiceGuideDialog(),
+              ),
+              buildCard(
+                context,
+                '채팅',
+                'assets/image/chat_image.png',
+                ChatScreen(),
+              ),
+              buildCard(
+                context,
+                '영상 통화',
+                'assets/image/video_chat_image.png',
+                VideoHomeScreen(),
+              ),
+              buildCard(
+                context,
+                '반려 프로필',
+                'assets/image/dogList_image.png',
+                PetProfileListScreen(),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildCard(
+      BuildContext context, String title, String imagePath, Widget route) {
+    return Card(
+      color: Color(0xFFF3FDE8),
+      elevation: 1.5,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return route;
+          }));
+        },
+        child: Container(
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(imagePath, width: 100, height: 100),
+              Text(
+                title,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
+
   Widget buildTabletLayout(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              height: 320,
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          expandedHeight: 320,
+          pinned: true,
+          backgroundColor: Colors.transparent,  // 투명한 색상으로 설정
+          flexibleSpace: FlexibleSpaceBar(
+            background: Container(
               color: Color(0xFFF3FDE8),
               child: Card(
                 elevation: 1.5,
@@ -267,12 +203,11 @@ class HomeScreenContent extends StatelessWidget {
                     );
                   },
                   child: Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset('assets/image/main_image.png'),
                           ],
@@ -283,134 +218,29 @@ class HomeScreenContent extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 16),
-            GridView.count(
-              crossAxisCount: 4,
-              shrinkWrap: true,
-              padding: EdgeInsets.only(left: 15, right: 15),
-              children: [
-                Container(
-                  width: 200,
-                  height: 120,
-                  child: Card(
-                    color: Color(0xFFF3FDE8),
-                    elevation: 1.5,
-                    child: InkWell(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return ServiceGuideDialog();
-                          },
-                        );
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/image/dogLang_image.png',
-                                width: 100, height: 100),
-                            Text(
-                              '언어 번역',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 200,
-                  height: 120,
-                  child: Card(
-                    color: Color(0xFFF3FDE8),
-                    elevation: 1.5,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChatScreen()));
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset('assets/image/chat_image.png',
-                              width: 100, height: 100),
-                          Text(
-                            '채팅',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 200,
-                  height: 120,
-                  child: Card(
-                    color: Color(0xFFF3FDE8),
-                    elevation: 1.5,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                              return VideoHomeScreen();
-                            }));
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset('assets/image/video_chat_image.png',
-                              width: 100, height: 100),
-                          Text(
-                            '영상 통화',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 200,
-                  height: 120,
-                  child: Card(
-                    color: Color(0xFFF3FDE8),
-                    elevation: 1.5,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PetProfileListScreen()));
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset('assets/image/dogList_image.png',
-                              width: 100, height: 100),
-                          Text(
-                            '반려 프로필',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
-      ),
+        SliverPadding(
+          padding: EdgeInsets.all(25),
+          sliver: SliverGrid.count(
+            crossAxisCount: 2,
+            children: [
+              buildCard(
+                context,
+                '챗 커뮤니티',
+                'assets/image/dogLang_image.png',
+                ChatScreen(),
+              ),
+              buildCard(
+                context,
+                '영상 통화',
+                'assets/image/video_chat_image.png',
+                VideoHomeScreen(),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
