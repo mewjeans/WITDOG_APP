@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _selectedIndex,
         items: bottomNavBarItems,
         onTap: _onItemTapped,
-        selectedItemColor: Color(0xFFA8DF8E),
+        selectedItemColor: Color(0xFF6ABFB9),
         showUnselectedLabels: _appBarVisible,
         unselectedItemColor: Colors.grey,
         unselectedLabelStyle: TextStyle(color: Colors.grey),
@@ -110,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 150,
             child: DrawerHeader(
               decoration: BoxDecoration(
-                color: Color(0xFFA8DF8E),
+                color: Color(0xFF6ABFB9),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),

@@ -16,7 +16,11 @@ class LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
-  final bool _isLoading = false;
+  late bool _isLoading = false;
+  late bool _shouldValidate = false;
+
+  // 위젯 빌드 외부에서 폼 상태에 액세스하기 위한 새로운 키
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -55,7 +59,7 @@ class LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF3FDE8),
+      backgroundColor: const Color(0xFFFFFFFF),
       body: Center(
         child: SingleChildScrollView(
           child: _buildLoginForm(context),
@@ -82,11 +86,11 @@ class LoginScreenState extends State<LoginScreen> {
                   labelText: '이메일',
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40.0),
-                    borderSide: const BorderSide(color: Colors.blue),
+                    borderSide: const BorderSide(color: Color(0xFF6ABFB9)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40.0),
-                    borderSide: const BorderSide(color: Colors.white),
+                    borderSide: const BorderSide(color: Color(0xFF6ABFB9)),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40.0),
@@ -103,11 +107,18 @@ class LoginScreenState extends State<LoginScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '이메일을 입력하세요.';
+                  } else if (!RegExp(
+                      r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+                      .hasMatch(value)) {
+                    return '유효한 이메일 주소를 입력하세요.';
                   }
                   return null;
                 },
+
               ),
             ),
+            _buildErrorTextWidget(),
+
             Container(
               padding: const EdgeInsets.only(top: 10.0),
               child: TextFormField(
@@ -117,11 +128,11 @@ class LoginScreenState extends State<LoginScreen> {
                   labelText: '비밀번호',
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40.0),
-                    borderSide: const BorderSide(color: Colors.blue),
+                    borderSide: const BorderSide(color: Color(0xFF6ABFB9)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40.0),
-                    borderSide: const BorderSide(color: Colors.white),
+                    borderSide: const BorderSide(color: Color(0xFF6ABFB9)),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40.0),
@@ -135,14 +146,17 @@ class LoginScreenState extends State<LoginScreen> {
                   fillColor: Colors.white,
                   filled: true,
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '비밀번호를 입력하세요.';
-                  }
-                  return null;
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '비밀번호를 입력하세요.';
+                    } else if (value.length < 6) {
+                      return '비밀번호는 최소 6자 이상이어야 합니다.';
+                    }
+                    return null;
                 }
               ),
             ),
+
             SizedBox.fromSize(
               size: const Size(0, 10),
             ),
@@ -170,25 +184,66 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Widget _buildErrorTextWidget() {
+    return Builder(
+      builder: (context) {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          if (_shouldValidate && !_formKey.currentState!.validate()) {
+            // 검증 오류 처리
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  '입력한 정보가 올바르지 않습니다.',
+                  style: TextStyle(color: Colors.white),
+                ),
+                backgroundColor: Colors.red,
+              ),
+            );
+            setState(() {
+              _shouldValidate = false; // 로그인 실패 시 검증 비활성화
+            });
+          }
+        });
+        return SizedBox.shrink();
+      },
+    );
+  }
+
+
   Widget _buildLoginButton(BuildContext context) {
     return ElevatedButton(
-      onPressed: _isLoading ? null : () {
-        final authProvider = provider.Provider.of<AuthProvider>(context, listen: false);
-        authProvider.login(_emailController.text, _passwordController.text, context);
+      onPressed: _isLoading
+          ? null
+          : () {
+        setState(() {
+          _shouldValidate = true; // 로그인 시 검증을 활성화
+        });
+        if (_formKey.currentState!.validate()) {
+          final authProvider = provider.Provider.of<AuthProvider>(context, listen: false);
+          authProvider.login(
+            _emailController.text,
+            _passwordController.text,
+            context,
+          );
+        } else {
+          setState(() {
+            _shouldValidate = false; // 로그인 실패 시 검증 비활성화
+          });
+        }
       },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40.0),
         ),
         minimumSize: const Size(100, 40),
-        backgroundColor: const Color(0xFFA8DF8E),
+        backgroundColor: const Color(0xFF6ABFB9),
       ),
       child: _isLoading
           ? const CircularProgressIndicator() // 로딩 중에는 로딩 인디케이터 표시
           : const Text(
-        '로그인',
-        style: TextStyle(fontSize: 20.0),
-      ),
+              '로그인',
+              style: TextStyle(fontSize: 20.0),
+            ),
     );
   }
 
@@ -228,7 +283,7 @@ class LoginScreenState extends State<LoginScreen> {
           borderRadius: BorderRadius.circular(40.0),
         ),
         minimumSize: const Size(170, 40),
-        backgroundColor: const Color(0xFFA8DF8E),
+        backgroundColor: const Color(0xFF6ABFB9),
       ),
       child: const Text(
         '회원가입',

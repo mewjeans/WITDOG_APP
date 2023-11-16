@@ -15,7 +15,7 @@ class HomeScreenContent extends StatelessWidget {
             height: 150,
             child: DrawerHeader(
               decoration: BoxDecoration(
-                color: Color(0xFFA8DF8E),
+                color: Color(0xFF6ABFB9),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
@@ -84,10 +84,10 @@ class HomeScreenContent extends StatelessWidget {
           floating: false,
           flexibleSpace: FlexibleSpaceBar(
             background: Container(
-              color:  Color(0xFFF3FDE8).withOpacity(1.0),
+              color:  Color(0xFFD4ECEA),
               child: Card(
                 elevation: 1.5,
-                color: Color(0xFFF3FDE8),
+                color: Color(0xFFD4ECEA),
                 child: InkWell(
                   onTap: () {
                     showDialog(
@@ -122,9 +122,9 @@ class HomeScreenContent extends StatelessWidget {
             children: [
               buildCard(
                 context,
-                '언어 번역',
-                'assets/image/dogLang_image.png',
-                ServiceGuideDialog(),
+                '영상 통화',
+                'assets/image/video_chat_image.png',
+                VideoHomeScreen(),
               ),
               buildCard(
                 context,
@@ -134,9 +134,9 @@ class HomeScreenContent extends StatelessWidget {
               ),
               buildCard(
                 context,
-                '영상 통화',
-                'assets/image/video_chat_image.png',
-                VideoHomeScreen(),
+                '펫 봇',
+                'assets/image/dogLang_image.png',
+                ServiceGuideDialog(),
               ),
               buildCard(
                 context,
@@ -154,7 +154,7 @@ class HomeScreenContent extends StatelessWidget {
   Widget buildCard(
       BuildContext context, String title, String imagePath, Widget route) {
     return Card(
-      color: Color(0xFFF3FDE8),
+      color: Color(0xFFD4ECEA),
       elevation: 1.5,
       child: InkWell(
         onTap: () {
@@ -189,10 +189,10 @@ class HomeScreenContent extends StatelessWidget {
           backgroundColor: Colors.transparent,  // 투명한 색상으로 설정
           flexibleSpace: FlexibleSpaceBar(
             background: Container(
-              color: Color(0xFFF3FDE8),
+              color: Color(0xFF6ABFB9),
               child: Card(
                 elevation: 1.5,
-                color: Color(0xFFF3FDE8),
+                color: Color(0xFF6ABFB9),
                 child: InkWell(
                   onTap: () {
                     showDialog(

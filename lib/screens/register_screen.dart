@@ -82,7 +82,7 @@ class _RegisterScreenPageState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFFF3FDE8),
+        backgroundColor: const Color(0xFFFFFFFF),
         body: Container(
           key: _formKey,
           padding: const EdgeInsets.all(16),
@@ -106,16 +106,16 @@ class _RegisterScreenPageState extends State<RegisterScreen> {
                                 labelText: '이메일',
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40.0),
-                                  borderSide: BorderSide(color: Colors.white),
+                                  borderSide: BorderSide(color: Color(0xFF6ABFB9)),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40.0),
-                                  borderSide: BorderSide(color: Colors.white),
+                                  borderSide: BorderSide(color: Color(0xFF6ABFB9)),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40.0),
                                   borderSide:
-                                      BorderSide(color: Colors.lightGreen),
+                                      BorderSide(color: Color(0xFF6ABFB9)),
                                 ),
                                 errorBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40.0),
@@ -142,11 +142,11 @@ class _RegisterScreenPageState extends State<RegisterScreen> {
                               labelText: '비밀번호',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(40.0),
-                                borderSide: BorderSide(color: Colors.white),
+                                borderSide: BorderSide(color: Color(0xFF6ABFB9)),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(40.0),
-                                borderSide: BorderSide(color: Colors.white),
+                                borderSide: BorderSide(color: Color(0xFF6ABFB9)),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(40.0),
@@ -174,16 +174,16 @@ class _RegisterScreenPageState extends State<RegisterScreen> {
                               labelText: '이름',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(40.0),
-                                borderSide: BorderSide(color: Colors.white),
+                                borderSide: BorderSide(color: Color(0xFF6ABFB9)),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(40.0),
-                                borderSide: BorderSide(color: Colors.white),
+                                borderSide: BorderSide(color: Color(0xFF6ABFB9)),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(40.0),
                                 borderSide:
-                                    BorderSide(color: Colors.lightGreen),
+                                    BorderSide(color: Color(0xFF6ABFB9)),
                               ),
                               errorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(40.0),
@@ -206,7 +206,7 @@ class _RegisterScreenPageState extends State<RegisterScreen> {
                               ),
                               minimumSize: const Size(double.infinity, 50),
                               // 너비를 화면 너비로 설정
-                              backgroundColor: const Color(0xFFA8DF8E),
+                              backgroundColor: const Color(0xFF6ABFB9),
                             ),
                             onPressed: () {
                               if (!_isLoading) {

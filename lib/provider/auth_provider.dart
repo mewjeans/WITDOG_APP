@@ -4,6 +4,7 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:pet/screens/home_screen.dart';
 import 'package:pet/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthProvider with ChangeNotifier {
   bool _isLoading = false;
@@ -36,13 +37,21 @@ class AuthProvider with ChangeNotifier {
         _navigateToHome(context);
       } else {
         print('로그인 실패: ${response.toString()}');
+        if (response.user != null && response.user is AuthException) {
+          // AuthException에서 상세한 오류 메시지를 얻어서 활용
+          throw (response.user as AuthException).message ?? '로그인에 실패했습니다.';
+        } else {
+          throw '로그인에 실패했습니다.';
+        }
       }
     } catch (error) {
       print('일반 오류: $error');
+      throw '로그인에 실패했습니다.';
     } finally {
       setLoading(false);
     }
   }
+
 
   Future<void> kakaologin(BuildContext context) async {
     if (await isKakaoTalkInstalled()) {

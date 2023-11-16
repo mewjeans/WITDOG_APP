@@ -182,7 +182,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           currentIndex: _selectedIndex,
           items: bottomNavBarItems,
           onTap: _onItemTapped,
-          selectedItemColor: Color(0xFFA8DF8E),
+          selectedItemColor: Color(0xFF6ABFB9),
           showUnselectedLabels: _appBarVisible,
           unselectedItemColor: Colors.grey,
           unselectedLabelStyle: TextStyle(color: Colors.grey),
@@ -207,6 +207,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       height: 100,
                       child: CircleAvatar(
                         radius: 50,
+                        backgroundColor: Color(0xFFFFFFFF),
                         backgroundImage: _imageBytes != null
                           ? MemoryImage(Uint8List.fromList(_imageBytes!))
                           : AssetImage('assets/icon/default_user_icon.png') as ImageProvider),
@@ -226,10 +227,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           child: Container(
                             padding: EdgeInsets.all(1),
                             decoration: BoxDecoration(
-                              color: Color(0xFFA8DF8E),
+                              color: Color(0xFF6ABFB9),
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                color: Color(0xFFA8DF8E),
+                                color: Color(0xFF6ABFB9),
                                 width: 2,
                               ),
                             ),
@@ -259,9 +260,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               height: 25,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Color(0xFFF3FDE8),
+                color: Color(0xFF6ABFB9),
                 border: Border.all(
-                  color: Color(0xFFA8DF8E),
+                  color: Color(0xFF6ABFB9),
                   width: 1,
                 ),
                 borderRadius: BorderRadius.circular(10),
@@ -269,6 +270,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               child: Text(
                 '프로필 관리',
                 style: TextStyle(
+                  color: Color(0xFFFFFFFF),
                   fontSize: 16,
                 ),
               ),

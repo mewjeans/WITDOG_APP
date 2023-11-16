@@ -11,7 +11,7 @@ class ServiceGuideDialog extends StatelessWidget {
       actions: <Widget>[
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFA8DF8E)
+            backgroundColor: Color(0xFF6ABFB9)
           ),
           child: Text('닫기'), // 버튼 텍스트 변경
           onPressed: () {
